@@ -1,0 +1,5 @@
+- [ ] todo item
+- [x] done item
+- [ ] item with **bold**
+  - [x] nested done
+  - [ ] nested todo
