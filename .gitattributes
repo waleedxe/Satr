@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.icns binary
+# Fixtures must stay byte-exact for round-trip tests.
+tests/fixtures/** -text
