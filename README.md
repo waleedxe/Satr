@@ -122,7 +122,7 @@ tests/
   integration/    file workflow tests
 ```
 
-Key decisions are listed in [`PROGRESS.md`](PROGRESS.md).
+Key decisions are listed in [`PROGRESS.md`](PROGRESS.md); every library and tool is described in [`TECH_STACK.md`](TECH_STACK.md).
 
 ## Roadmap
 
