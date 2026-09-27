@@ -52,6 +52,7 @@ export function mountFakeEditor(tabId: string) {
       clear: () => undefined,
     },
     editor: null,
+    sourceView: null,
     setDocumentDir: vi.fn(),
   };
   editorRegistry.register(tabId, handle);

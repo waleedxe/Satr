@@ -1,3 +1,4 @@
+import type { EditorView } from "@codemirror/view";
 import type { Editor } from "@tiptap/core";
 
 /** Find/replace operations shared by the WYSIWYG and source editors. */
@@ -28,6 +29,8 @@ export interface EditorHandle {
   search: SearchTarget;
   /** The TipTap editor, in WYSIWYG mode only. */
   editor: Editor | null;
+  /** The CodeMirror view, in source mode only. */
+  sourceView: EditorView | null;
   setDocumentDir(dir: string | null): void;
 }
 

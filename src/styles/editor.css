@@ -1,0 +1,475 @@
+/* Rendered Markdown inside the visual editor. */
+
+.wysiwyg-mount {
+  min-height: 100%;
+}
+
+.ProseMirror {
+  max-width: var(--content-width);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 40px var(--editor-padding) 45vh;
+  font-family: var(--editor-font);
+  font-size: var(--editor-font-size);
+  line-height: 1.72;
+  color: var(--text);
+  caret-color: var(--accent);
+  outline: none;
+  word-wrap: break-word;
+  font-variant-ligatures: common-ligatures;
+}
+
+.ProseMirror ::selection {
+  background: var(--selection);
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.9em;
+}
+
+.ProseMirror p {
+  margin: 0;
+}
+
+.ProseMirror p + p {
+  margin-top: 0.9em;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  margin: 1.5em 0 0.5em;
+  color: var(--md-heading);
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.ProseMirror > :first-child {
+  margin-top: 0;
+}
+
+.ProseMirror h1 {
+  font-size: 2em;
+}
+.ProseMirror h2 {
+  font-size: 1.55em;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid var(--border);
+}
+.ProseMirror h3 {
+  font-size: 1.28em;
+}
+.ProseMirror h4 {
+  font-size: 1.1em;
+}
+.ProseMirror h5 {
+  font-size: 1em;
+}
+.ProseMirror h6 {
+  font-size: 0.92em;
+  color: var(--text-muted);
+}
+
+.ProseMirror a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  text-underline-offset: 2px;
+  cursor: text;
+}
+
+.ProseMirror a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.ProseMirror strong {
+  font-weight: 650;
+}
+
+.ProseMirror code {
+  padding: 0.12em 0.36em;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-small);
+  background: var(--code-bg);
+  color: var(--md-code);
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+
+.ProseMirror blockquote {
+  margin-inline: 0;
+  padding: 0.1em 1em;
+  border-inline-start: 3px solid var(--quote-border);
+  color: var(--text-muted);
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-inline-start: 1.6em;
+}
+
+.ProseMirror li > p {
+  margin: 0.15em 0;
+}
+
+.ProseMirror li + li {
+  margin-top: 0.15em;
+}
+
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-inline-start: 0.2em;
+}
+
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label {
+  flex-shrink: 0;
+  margin-top: 0.32em;
+  user-select: none;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label input {
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.ProseMirror ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div > p {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.ProseMirror hr {
+  height: 0;
+  margin: 1.6em 0;
+  border: none;
+  border-top: 2px solid var(--border);
+}
+
+.ProseMirror hr.ProseMirror-selectednode {
+  border-top-color: var(--accent);
+}
+
+/* Code blocks */
+
+.ProseMirror pre.code-block {
+  position: relative;
+  margin: 1em 0;
+  padding: 2.1em 1.1em 1em;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.87em;
+  line-height: 1.55;
+  tab-size: 4;
+  direction: ltr;
+}
+
+.ProseMirror pre.code-block code {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-size: inherit;
+  white-space: pre;
+}
+
+.code-block-toolbar {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  user-select: none;
+}
+
+.code-block-lang {
+  width: 110px;
+  padding: 1px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: var(--text-faint);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  text-align: right;
+}
+
+.code-block-lang:hover,
+.code-block-lang:focus {
+  border-color: var(--border-strong);
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+}
+
+.code-block code span[style] {
+  color: var(--shiki-light);
+}
+
+:root[data-theme="dark"] .code-block code span[style] {
+  color: var(--shiki-dark);
+}
+
+/* Raw Markdown / HTML / front matter kept verbatim */
+
+.ProseMirror pre.raw-block {
+  position: relative;
+  margin: 1em 0;
+  padding: 1.6em 1em 0.8em;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  direction: ltr;
+}
+
+.ProseMirror pre.raw-block::before {
+  content: attr(data-label);
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  color: var(--text-faint);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ProseMirror pre.raw-block code {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+.ProseMirror .raw-inline {
+  padding: 0 0.25em;
+  border-radius: var(--radius-small);
+  background: var(--code-bg);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+/* Tables */
+
+.ProseMirror .tableWrapper {
+  margin: 1em 0;
+  overflow-x: auto;
+}
+
+.ProseMirror table {
+  width: auto;
+  min-width: 40%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  position: relative;
+  min-width: 3em;
+  padding: 0.4em 0.75em;
+  border: 1px solid var(--table-border);
+  vertical-align: top;
+}
+
+.ProseMirror th {
+  background: var(--table-head);
+  font-weight: 600;
+  text-align: start;
+}
+
+.ProseMirror th p,
+.ProseMirror td p {
+  margin: 0;
+}
+
+.ProseMirror .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--selection);
+  pointer-events: none;
+}
+
+/* Images */
+
+.ProseMirror .image-node {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+.ProseMirror .image-node img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-small);
+}
+
+.ProseMirror .image-fallback {
+  display: none;
+}
+
+.ProseMirror .image-node.is-broken img {
+  display: none;
+}
+
+.ProseMirror .image-node.is-broken .image-fallback {
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-small);
+  color: var(--text-faint);
+  font-size: 0.85em;
+}
+
+.ProseMirror .image-node.ProseMirror-selectednode {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+
+/* Math */
+
+.ProseMirror .math-block {
+  margin: 1em 0;
+  padding: 0.6em 0;
+  border-radius: var(--radius);
+  text-align: center;
+  overflow-x: auto;
+  cursor: pointer;
+}
+
+.ProseMirror .math-inline {
+  cursor: pointer;
+  border-radius: var(--radius-small);
+}
+
+.ProseMirror .math-node:hover {
+  background: var(--bg-hover);
+}
+
+.ProseMirror .math-node.ProseMirror-selectednode,
+.ProseMirror .math-node.is-editing {
+  background: var(--accent-soft);
+}
+
+.math-source {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.math-block .math-source {
+  width: 100%;
+  margin-top: 0.5em;
+  padding: 0.5em;
+  resize: vertical;
+  text-align: start;
+}
+
+.math-inline .math-source {
+  width: 16em;
+  margin-inline-start: 0.3em;
+  padding: 0 0.3em;
+}
+
+.math-node.is-editing .math-source {
+  display: inline-block;
+}
+
+.math-block.is-editing .math-source {
+  display: block;
+}
+
+.math-source:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.math-empty {
+  color: var(--text-faint);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.math-error {
+  color: var(--danger);
+  font-family: var(--font-mono);
+}
+
+/* Selection helpers */
+
+.ProseMirror-selectednode {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.ProseMirror .math-node.ProseMirror-selectednode {
+  outline: none;
+}
+
+.ProseMirror-gapcursor::after {
+  border-top-color: var(--text) !important;
+}
+
+/* Placeholder */
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: inline-start;
+  height: 0;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+/* Search */
+
+.search-match {
+  border-radius: 2px;
+  background: var(--search-match);
+}
+
+.search-match-current {
+  background: var(--search-current);
+}
+
+/* Focus mode: dim everything but the block with the cursor. */
+
+.focus-mode .ProseMirror > * {
+  opacity: 0.32;
+  transition: opacity 180ms ease;
+}
+
+.focus-mode .ProseMirror > .is-focused-block,
+.focus-mode .ProseMirror:not(.ProseMirror-focused) > * {
+  opacity: 1;
+}

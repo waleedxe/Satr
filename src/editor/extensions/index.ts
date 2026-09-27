@@ -40,6 +40,7 @@ export function createSchemaExtensions(): AnyExtension[] {
       strike: false,
       link: false,
       underline: false,
+      trailingNode: false,
       heading: { levels: [1, 2, 3, 4, 5, 6] },
     }),
     MarkdownCode,

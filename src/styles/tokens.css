@@ -1,0 +1,86 @@
+:root {
+  --font-sans:
+    "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Noto Sans", "Noto Sans Arabic",
+    "Helvetica Neue", Arial, sans-serif;
+  --font-serif:
+    Charter, "Iowan Old Style", Georgia, Cambria, "Noto Serif", "Noto Naskh Arabic", serif;
+  --font-mono:
+    "Cascadia Code", "Cascadia Mono", Consolas, "SF Mono", Menlo, "DejaVu Sans Mono", monospace;
+  --font-ui: var(--font-sans);
+
+  --editor-font: var(--font-sans);
+  --editor-font-size: 16px;
+  --content-width: 780px;
+  --editor-padding: 48px;
+
+  --radius: 6px;
+  --radius-small: 4px;
+  --sidebar-width: 260px;
+  --transition: 120ms ease;
+
+  /* Light theme */
+  --bg: #ffffff;
+  --bg-subtle: #f7f7f5;
+  --bg-chrome: #f3f3f1;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-active: rgba(0, 0, 0, 0.08);
+  --border: #e3e3df;
+  --border-strong: #cfcfca;
+  --text: #24292f;
+  --text-muted: #626870;
+  --text-faint: #9a9fa6;
+  --accent: #2764d8;
+  --accent-soft: rgba(39, 100, 216, 0.1);
+  --accent-contrast: #ffffff;
+  --danger: #c9252d;
+  --warning-bg: #fff6d6;
+  --warning-text: #6b4e00;
+  --selection: rgba(39, 100, 216, 0.2);
+  --code-bg: #f5f5f3;
+  --code-border: #ebebe7;
+  --md-code: #b1365e;
+  --md-heading: #1f2328;
+  --quote-border: #d6d6d0;
+  --table-border: #dcdcd6;
+  --table-head: #f6f6f3;
+  --search-match: rgba(255, 196, 0, 0.35);
+  --search-current: rgba(255, 140, 0, 0.6);
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
+
+:root[data-theme="dark"] {
+  --bg: #1c1e22;
+  --bg-subtle: #212428;
+  --bg-chrome: #17191c;
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: rgba(255, 255, 255, 0.1);
+  --border: #30343a;
+  --border-strong: #43474e;
+  --text: #dde1e6;
+  --text-muted: #9ba1a9;
+  --text-faint: #6c727a;
+  --accent: #74a7ff;
+  --accent-soft: rgba(116, 167, 255, 0.14);
+  --accent-contrast: #0e1726;
+  --danger: #ff6b6b;
+  --warning-bg: #3a3218;
+  --warning-text: #f3dc95;
+  --selection: rgba(116, 167, 255, 0.28);
+  --code-bg: #25282d;
+  --code-border: #30343a;
+  --md-code: #f38ba8;
+  --md-heading: #eef1f4;
+  --quote-border: #454a52;
+  --table-border: #3a3e45;
+  --table-head: #24272c;
+  --search-match: rgba(255, 196, 0, 0.3);
+  --search-current: rgba(255, 150, 0, 0.55);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --editor-padding: 24px;
+  }
+}
