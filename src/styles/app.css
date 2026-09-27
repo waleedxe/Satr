@@ -977,3 +977,9 @@ kbd {
     display: none;
   }
 }
+
+/* The editors show their own caret; no focus ring around the whole page. */
+.ProseMirror:focus-visible,
+.cm-content:focus-visible {
+  box-shadow: none;
+}

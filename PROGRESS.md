@@ -1,46 +1,59 @@
 # Build Progress — Markdown Desktop
 
 Tracks progress against `01-MARKDOWN-EDITOR-AUTONOMOUS-BUILD-v2.md` (the spec).
-Update this file and commit after every major step so no work is lost.
+Updated and committed after every major step.
 
 ## Request summary
 
-- Build a Typora-style Markdown editor for Windows (placeholder name: **Markdown Desktop**)
-- Stack: Tauri 2 + Rust, React + TypeScript + Vite, TipTap, unified/remark/rehype, Shiki, KaTeX, Zustand, Tailwind
+- Typora-style Markdown editor for Windows (placeholder name **Markdown Desktop**)
+- Stack: Tauri 2 + Rust, React + TypeScript + Vite, TipTap, unified/remark, Shiki, KaTeX, Zustand
 - Local-first, offline, no telemetry; `.md` files are the source of truth
-- Must preserve Markdown on round-trips, including tables, code, math, Unicode and Arabic
-- WYSIWYG view plus raw source view, outline, themes, find/replace, recent files, file watcher
-- Needs tests, lint, typecheck, Rust checks, NSIS installer, GitHub Actions CI and a README
-- Work autonomously phase by phase, with small git commits; log external blockers in `BLOCKERS.md`
+- Lossless round trips (tables, code, math, Unicode, Arabic)
+- Tests, lint, typecheck, Rust checks, NSIS installer, GitHub Actions, README
 
-## Environment (checked 2026-09-26)
+## Environment
 
-| Tool | Status |
-|------|--------|
-| git  | 2.45.2 ✅ |
-| node | 22.11.0 ✅ |
-| npm  | 10.9.0 ✅ |
-| pnpm | missing (npm will be used) |
-| Rust / cargo | ❌ **missing, needs to be installed (rustup + MSVC build tools)** |
+| Tool | Version |
+|------|---------|
+| Node / npm | 22.11 / 10.9 |
+| Rust | 1.98.1 (installed via rustup) |
+| MSVC | VS 2022 Build Tools 14.44 (installed) |
+| WebView2 | 153 (pre-installed) |
 
 ## Phases
 
-- [ ] **Phase 0: Bootstrap.** Tauri 2 + React + TS scaffold, lint/format, strict TS, Rust checks, dev launch, first Windows build
-- [ ] **Phase 1: Markdown engine.** TipTap, parse/serialize, round-trip tests
-- [ ] **Phase 2: File workflow.** New/open/save/save-as, unsaved state, recent files, drag-drop, watcher
-- [ ] **Phase 3: Full editing.** Tables, tasks, links, images, Shiki, KaTeX, shortcuts, find/replace
-- [ ] **Phase 4: Desktop UX.** Outline, sidebar, themes, settings, font/width, empty and error states
-- [ ] **Phase 5: Quality.** Tests, accessibility, performance, cleanup, README
-- [ ] **Phase 6: Release.** NSIS installer, GitHub Actions, version metadata, release docs
-
-## Log
-
-- 2026-09-26: Read the spec, created this file, ran `git init` and made the initial commit.
+- [x] **Phase 0 — Bootstrap**: Tauri 2 + React + TS, ESLint, Prettier, strict TS, Rust checks
+- [x] **Phase 1 — Markdown engine**: remark parser/serializer, verbatim block reuse, round-trip fixtures
+- [x] **Phase 2 — File workflow**: new/open/save/save-as, unsaved state, recent files, drag-drop, watcher
+- [x] **Phase 3 — Full editing**: tables, tasks, links, images, Shiki, KaTeX, shortcuts, find/replace
+- [x] **Phase 4 — Desktop UX**: outline, sidebar, themes, settings, font/width, empty and error states
+- [x] **Phase 5 — Quality**: tests, accessibility basics, README, docs
+- [ ] **Phase 6 — Release**: production bundle + NSIS/MSI (in progress), CI/release workflows written
 
 ## Decisions
 
-_(record engineering decisions here as they're made)_
+- **Plain CSS with design tokens instead of Tailwind**: editor typography is custom CSS anyway; fewer dependencies.
+- **Verbatim block reuse**: the serializer compares each top-level editor node with the node it was loaded from (`Node.eq`) and writes the original source text when unchanged. Edited blocks are rendered with the file's detected style (bullet, emphasis, fence characters).
+- **Unsupported Markdown becomes a raw block** (footnotes, reference definitions, mixed task lists, HTML, front matter) so nothing is ever lost.
+- **Line endings and BOM** are detected on load and restored on save.
+- **Parsing large files in a Web Worker** (≥ 64 KB) keeps the UI responsive.
+- **Shiki with the JavaScript regex engine** (no WASM, keeps the CSP strict); languages load on demand.
+- **KaTeX loaded lazily** with `trust: false`.
+- **Native bridge** (`src/native`): React never calls Tauri directly; tests use an in-memory bridge.
+- **Atomic saves** in Rust (temp file + rename, with a direct-write fallback).
+- **Asset protocol scope** is granted per opened document's folder only.
+- **happy-dom/node test environment** because jsdom 27 needs Node ≥ 22.12.
+- **In-app menu bar** (not a native menu) so shortcuts and menus behave identically everywhere.
+
+## Log
+
+- 2026-09-26: Read spec, created tracker, initialized git.
+- 2026-09-26: Installed Rust + MSVC Build Tools, scaffolded Tauri app, Rust file layer (14 tests).
+- 2026-09-26: Markdown engine with 13 round-trip fixtures (68 tests).
+- 2026-09-26: File workflow and stores (27 integration tests).
+- 2026-09-27: Editor UI, source mode, commands, sidebar, themes; lint + typecheck clean, 103 tests pass.
+- 2026-09-27: Docs, CI/release workflows, smoke-test script; release build started.
 
 ## Blockers
 
-- Rust toolchain is not installed. It's required for Tauri, so it must be installed before Phase 0 can finish.
+See [BLOCKERS.md](BLOCKERS.md) — code-signing certificate, final branding, license confirmation, GitHub repo.

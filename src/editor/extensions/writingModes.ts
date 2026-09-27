@@ -1,5 +1,5 @@
 import { Extension } from "@tiptap/core";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
+import { Plugin, PluginKey, Selection } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
 
 export interface WritingModesOptions {
@@ -18,6 +18,21 @@ export const WritingModes = Extension.create<WritingModesOptions>({
 
   addOptions() {
     return { isTypewriter: () => false };
+  },
+
+  // Browsers stop Ctrl+Home/End at non-editable nodes (math, checkboxes),
+  // so jump to the document edges explicitly.
+  addKeyboardShortcuts() {
+    const jump = (atEnd: boolean) => {
+      const { state, view } = this.editor;
+      const selection = atEnd ? Selection.atEnd(state.doc) : Selection.atStart(state.doc);
+      view.dispatch(state.tr.setSelection(selection).scrollIntoView());
+      return true;
+    };
+    return {
+      "Mod-End": () => jump(true),
+      "Mod-Home": () => jump(false),
+    };
   },
 
   addProseMirrorPlugins() {

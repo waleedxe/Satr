@@ -17,7 +17,9 @@
     "rust:fmt": "cargo fmt --manifest-path src-tauri/Cargo.toml --all -- --check",
     "rust:clippy": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings",
     "rust:test": "cargo test --manifest-path src-tauri/Cargo.toml",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run rust:fmt && npm run rust:clippy && npm run rust:test"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run rust:fmt && npm run rust:clippy && npm run rust:test",
+    "smoke:build": "tauri build --debug --no-bundle --config scripts/smoke.tauri.conf.json",
+    "smoke": "node scripts/smoke.mjs src-tauri/target/debug/markdown-desktop.exe"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.1",
@@ -71,6 +73,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.12.0",
     "happy-dom": "^20.14.5",
+    "playwright-core": "^1.63.0",
     "prettier": "^3.9.9",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.70.1",

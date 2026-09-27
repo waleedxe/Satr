@@ -1,0 +1,13 @@
+{
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Markdown Desktop",
+        "width": 1200,
+        "height": 820,
+        "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --remote-debugging-port=9333"
+      }
+    ]
+  }
+}
