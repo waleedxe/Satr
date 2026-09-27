@@ -1,4 +1,4 @@
-# Build Progress — Satr
+# Build Progress — Satr (سطر)
 
 Tracks progress against `01-MARKDOWN-EDITOR-AUTONOMOUS-BUILD-v2.md` (the spec).
 Updated and committed after every major step.
@@ -30,6 +30,15 @@ Updated and committed after every major step.
 - [x] **Phase 5 — Quality**: tests, accessibility basics, README, docs
 - [x] **Phase 6 — Release**: NSIS + MSI installers built locally, CI and release workflows written
 
+### After the MVP
+
+- [x] Renamed to **Satr (سطر)** with a new icon (`assets/icon.svg`)
+- [x] Right-to-left layout for Arabic lists, task items, quotes and tables
+- [x] Arabic user interface (English stays the default), fully mirrored layout
+- [x] Font picker: 5 bundled Arabic fonts, installed system fonts, separate heading font
+- [ ] Showcase page with Arabic UI screenshots (offered)
+- [ ] Performance test with 1–5 MB files (offered)
+
 ## Decisions
 
 - **Plain CSS with design tokens instead of Tailwind**: editor typography is custom CSS anyway; fewer dependencies.
@@ -44,6 +53,10 @@ Updated and committed after every major step.
 - **Asset protocol scope** is granted per opened document's folder only.
 - **happy-dom/node test environment** because jsdom 27 needs Node ≥ 22.12.
 - **In-app menu bar** (not a native menu) so shortcuts and menus behave identically everywhere.
+- **i18n without a library**: typed dictionaries in `src/i18n`; the Arabic file must cover every English key (enforced by TypeScript and tests).
+- **Container text direction via decorations**: `dir="auto"` on containers ignores children that set their own `dir`, so lists/tables get `dir` from their first letter.
+- **Bundled fonts load on demand** (dynamic CSS import) so they cost disk space but no startup time.
+- **Smoke test uses a separate debug build** with the WebView2 debugging port; release builds never expose it.
 
 ## Log
 
@@ -54,7 +67,10 @@ Updated and committed after every major step.
 - 2026-09-27: Editor UI, source mode, commands, sidebar, themes; lint + typecheck clean, 103 tests pass.
 - 2026-09-27: Docs, CI/release workflows, smoke-test script; release build started.
 - 2026-09-27: Release build: NSIS setup.exe (3.1 MB) + MSI (3.9 MB). End-to-end smoke test on the real app: 19/19 checks pass.
+- 2026-09-27: Renamed to Satr, new icon; installers now `Satr_0.1.0_x64-setup.exe` / `.msi`.
+- 2026-09-27: Fixed Arabic RTL layout for lists and tables (found from real screenshots).
+- 2026-09-27: Arabic UI + font picker. 112 frontend + 15 Rust tests, smoke 19/19. Measured: installer 4.6 MB, window ~0.2 s, ~130–140 MB memory, ~1% idle CPU.
 
 ## Blockers
 
-See [BLOCKERS.md](BLOCKERS.md) — code-signing certificate, final branding, license confirmation, GitHub repo.
+See [BLOCKERS.md](BLOCKERS.md) — publisher name, code-signing certificate, license confirmation, GitHub repo.
