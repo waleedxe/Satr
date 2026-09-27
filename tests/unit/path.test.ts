@@ -67,3 +67,13 @@ describe("image source resolution", () => {
     expect(resolveImageSrc("a.png", { dir: null, toAssetUrl: ctx.toAssetUrl })).toBe("");
   });
 });
+
+describe("text direction", () => {
+  it("follows the first letter", async () => {
+    const { textDirection } = await import("../../src/editor/extensions/textDirection");
+    expect(textDirection("123 مرحبا hello")).toBe("rtl");
+    expect(textDirection("- hello مرحبا")).toBe("ltr");
+    expect(textDirection("שלום")).toBe("rtl");
+    expect(textDirection("123 !")).toBeNull();
+  });
+});

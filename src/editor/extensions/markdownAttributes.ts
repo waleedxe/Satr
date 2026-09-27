@@ -11,7 +11,7 @@ export const MarkdownAttributes = Extension.create({
   addGlobalAttributes() {
     return [
       {
-        types: ["paragraph", "heading", "blockquote", "listItem", "taskItem"],
+        types: ["paragraph", "heading"],
         attributes: {
           dir: {
             default: "auto",

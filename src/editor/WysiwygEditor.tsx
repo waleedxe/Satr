@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { CodeHighlight } from "./extensions/highlight";
 import { createSchemaExtensions } from "./extensions";
+import { TextDirection } from "./extensions/textDirection";
 import { WritingModes } from "./extensions/writingModes";
 import { attachNodes, fragmentToMarkdown, markdownToSlice, serializeMarkdown } from "./markdown";
 import type { MarkdownStyle, SourceMap } from "./markdown";
@@ -95,6 +96,7 @@ export function WysiwygEditor({ tab, active }: Props) {
           extensions: [
             ...createSchemaExtensions(),
             CodeHighlight,
+            TextDirection,
             Search,
             WritingModes.configure({ isTypewriter: () => useSettings.getState().typewriterMode }),
             Placeholder.configure({ placeholder: "Start writing…" }),
