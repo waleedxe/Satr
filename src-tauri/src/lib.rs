@@ -31,5 +31,5 @@ pub fn run() {
             commands::startup_documents,
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Markdown Desktop");
+        .expect("error while running Satr");
 }

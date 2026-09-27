@@ -13,7 +13,12 @@ export function EmptyState() {
   return (
     <div className="empty-state">
       <div className="empty-card">
-        <h1 className="empty-title">Markdown Desktop</h1>
+        <h1 className="empty-title">
+          Satr{" "}
+          <span className="empty-title-ar" lang="ar">
+            سطر
+          </span>
+        </h1>
         <p className="empty-subtitle">A calm place to write. Your files stay on your computer.</p>
         <div className="empty-actions">
           <button type="button" className="button button-primary" onClick={() => newDocument()}>

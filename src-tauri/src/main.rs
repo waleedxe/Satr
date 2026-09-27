@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    markdown_desktop_lib::run()
+    satr_lib::run()
 }

@@ -12,7 +12,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 import { chromium } from "playwright-core";
 
-const exe = resolve(process.argv[2] ?? "src-tauri/target/release/markdown-desktop.exe");
+const exe = resolve(process.argv[2] ?? "src-tauri/target/release/satr.exe");
 const port = 9333;
 const shots = resolve("smoke-output");
 mkdirSync(shots, { recursive: true });

@@ -177,9 +177,9 @@ function ShortcutsPanel() {
 
 function AboutPanel() {
   return (
-    <PanelFrame title="About Markdown Desktop">
+    <PanelFrame title="About Satr">
       <p className="panel-text">
-        <strong>Markdown Desktop</strong> {__APP_VERSION__}
+        <strong>Satr</strong> {__APP_VERSION__}
       </p>
       <p className="panel-text">A fast, local-first Markdown editor.</p>
       <p className="panel-text">

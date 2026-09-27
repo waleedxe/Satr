@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: Markdown Desktop ${{ github.ref_name }}
+          releaseName: Satr ${{ github.ref_name }}
           releaseBody: See CHANGELOG.md for details.
           releaseDraft: true
           prerelease: false

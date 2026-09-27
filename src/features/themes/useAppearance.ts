@@ -69,7 +69,7 @@ export function useWindowTitle(): void {
   const title = useDocuments((s) => s.tabs.find((t) => t.id === s.activeId)?.title);
   const dirty = useDocuments((s) => s.tabs.find((t) => t.id === s.activeId)?.dirty ?? false);
   useEffect(() => {
-    const text = title ? `${dirty ? "● " : ""}${title} — Markdown Desktop` : "Markdown Desktop";
+    const text = title ? `${dirty ? "● " : ""}${title} — Satr` : "Satr";
     document.title = text;
     void bridge()
       .setWindowTitle(text)

@@ -694,7 +694,7 @@ export const COMMANDS: Command[] = [
   },
   {
     id: "help.about",
-    label: "About Markdown Desktop",
+    label: "About Satr",
     scope: "app",
     run: () => useUi.getState().setPanel("about"),
   },

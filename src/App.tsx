@@ -55,7 +55,7 @@ export default function App() {
   if (error) {
     return (
       <div className="fatal" role="alert">
-        <h1>Markdown Desktop could not start</h1>
+        <h1>Satr could not start</h1>
         <p>{error}</p>
       </div>
     );

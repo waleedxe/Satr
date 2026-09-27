@@ -160,8 +160,7 @@ export class MemoryBridge implements NativeBridge {
 export function createDemoBridge(): MemoryBridge {
   const bridge = new MemoryBridge();
   bridge.files.set("/demo/Welcome.md", {
-    content:
-      "# Welcome to Markdown Desktop\n\nThis is a browser preview running without the desktop shell.\n",
+    content: "# Welcome to Satr\n\nThis is a browser preview running without the desktop shell.\n",
     mtime: 1,
     hasBom: false,
   });

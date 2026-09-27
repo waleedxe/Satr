@@ -1,8 +1,8 @@
-# Markdown Desktop
+# Satr
 
 A fast, local-first Markdown editor for Windows (with a cross-platform architecture). It is designed to feel like writing, not coding: you edit formatted text directly, and your `.md` files stay exactly what they are — plain Markdown on your disk.
 
-> **Name:** "Markdown Desktop" is a temporary product name until branding is finalized.
+> **Satr** (سطر) means "a line of writing" in Arabic.
 
 ## Screenshots
 
@@ -27,11 +27,11 @@ _Screenshots will be added before the first public release._
 
 ## Privacy
 
-Markdown Desktop works completely offline. There is **no account, no cloud sync and no telemetry**. The app only reads and writes the files you open, and never sends document contents anywhere. Remote images referenced by a document (`https://…`) are loaded like in any Markdown viewer.
+Satr works completely offline. There is **no account, no cloud sync and no telemetry**. The app only reads and writes the files you open, and never sends document contents anywhere. Remote images referenced by a document (`https://…`) are loaded like in any Markdown viewer.
 
 ## Installation
 
-Download the latest `Markdown Desktop_x.y.z_x64-setup.exe` (or `.msi`) from the [Releases](../../releases) page and run it.
+Download the latest `Satr_x.y.z_x64-setup.exe` (or `.msi`) from the [Releases](../../releases) page and run it.
 
 - Supported: Windows 10, Windows 11 and Windows Server 2019/2022 (x64).
 - Requires Microsoft Edge WebView2 (pre-installed on Windows 11 and current Windows 10; the installer downloads it if missing).
@@ -73,9 +73,9 @@ npm run tauri build
 
 Artifacts are written to `src-tauri/target/release/bundle/`:
 
-- `nsis/Markdown Desktop_<version>_x64-setup.exe` — per-user installer
-- `msi/Markdown Desktop_<version>_x64_en-US.msi` — MSI package
-- `src-tauri/target/release/markdown-desktop.exe` — the portable executable
+- `nsis/Satr_<version>_x64-setup.exe` — per-user installer
+- `msi/Satr_<version>_x64_en-US.msi` — MSI package
+- `src-tauri/target/release/satr.exe` — the portable executable
 
 ### Windows packaging and code signing
 

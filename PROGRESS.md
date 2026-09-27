@@ -1,11 +1,11 @@
-# Build Progress — Markdown Desktop
+# Build Progress — Satr
 
 Tracks progress against `01-MARKDOWN-EDITOR-AUTONOMOUS-BUILD-v2.md` (the spec).
 Updated and committed after every major step.
 
 ## Request summary
 
-- Typora-style Markdown editor for Windows (placeholder name **Markdown Desktop**)
+- Typora-style Markdown editor for Windows (named **Satr — سطر**)
 - Stack: Tauri 2 + Rust, React + TypeScript + Vite, TipTap, unified/remark, Shiki, KaTeX, Zustand
 - Local-first, offline, no telemetry; `.md` files are the source of truth
 - Lossless round trips (tables, code, math, Unicode, Arabic)

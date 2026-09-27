@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve Markdown Desktop!
+Thanks for helping improve Satr!
 
 ## Getting started
 

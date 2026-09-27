@@ -983,3 +983,9 @@ kbd {
 .cm-content:focus-visible {
   box-shadow: none;
 }
+
+.empty-title-ar {
+  margin-inline-start: 8px;
+  color: var(--text-muted);
+  font-weight: 500;
+}

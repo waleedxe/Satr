@@ -1,9 +1,9 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Markdown Desktop",
-  "mainBinaryName": "markdown-desktop",
+  "productName": "Satr",
+  "mainBinaryName": "satr",
   "version": "0.1.0",
-  "identifier": "com.markdowndesktop.app",
+  "identifier": "com.satr.editor",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Markdown Desktop",
+        "title": "Satr",
         "width": 1200,
         "height": 820,
         "minWidth": 520,
@@ -45,11 +45,11 @@
   "bundle": {
     "active": true,
     "targets": ["nsis", "msi"],
-    "publisher": "Markdown Desktop Contributors",
-    "copyright": "Copyright (c) Markdown Desktop contributors",
+    "publisher": "Satr contributors",
+    "copyright": "Copyright (c) Satr contributors",
     "category": "Productivity",
     "shortDescription": "A fast, local-first Markdown editor",
-    "longDescription": "Markdown Desktop is a fast, offline, local-first Markdown editor with a distraction-free writing experience.",
+    "longDescription": "Satr is a fast, offline, local-first Markdown editor with a distraction-free writing experience.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

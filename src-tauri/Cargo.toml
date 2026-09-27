@@ -1,15 +1,15 @@
 [package]
-name = "markdown-desktop"
+name = "satr"
 version = "0.1.0"
 description = "A fast, local-first Markdown editor"
-authors = ["Markdown Desktop contributors"]
+authors = ["Satr contributors"]
 license = "MIT"
 edition = "2021"
 rust-version = "1.77"
 
 [lib]
 # The `_lib` suffix avoids a lib/bin name clash on Windows (cargo#8519).
-name = "markdown_desktop_lib"
+name = "satr_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

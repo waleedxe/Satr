@@ -3,7 +3,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Markdown Desktop",
+        "title": "Satr",
         "width": 1200,
         "height": 820,
         "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --remote-debugging-port=9333"
