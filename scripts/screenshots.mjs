@@ -146,6 +146,8 @@ await page.selectOption("#setting-font", "sans");
 await page.selectOption("#setting-heading-font", "same");
 await page.keyboard.press("Escape");
 await setTheme(page, "System Theme");
+// Settings are written to disk after a short delay; let that finish.
+await sleep(1500);
 await app.browser.close();
 app.child.kill();
 console.log(`Screenshots saved to ${out}`);

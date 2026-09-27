@@ -172,7 +172,7 @@ try {
   await page.click(".menubar-button:has-text('View')");
   await page.hover(".menu-item:has-text('Theme')");
   await page.click(".menu-item:has-text('System Theme')");
-  await sleep(500);
+  await sleep(1500); // let the settings save reach disk
 } catch (error) {
   check("reopen", false, error instanceof Error ? error.message : String(error));
 } finally {
