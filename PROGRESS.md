@@ -28,7 +28,7 @@ Updated and committed after every major step.
 - [x] **Phase 3 — Full editing**: tables, tasks, links, images, Shiki, KaTeX, shortcuts, find/replace
 - [x] **Phase 4 — Desktop UX**: outline, sidebar, themes, settings, font/width, empty and error states
 - [x] **Phase 5 — Quality**: tests, accessibility basics, README, docs
-- [ ] **Phase 6 — Release**: production bundle + NSIS/MSI (in progress), CI/release workflows written
+- [x] **Phase 6 — Release**: NSIS + MSI installers built locally, CI and release workflows written
 
 ## Decisions
 
@@ -53,6 +53,7 @@ Updated and committed after every major step.
 - 2026-09-26: File workflow and stores (27 integration tests).
 - 2026-09-27: Editor UI, source mode, commands, sidebar, themes; lint + typecheck clean, 103 tests pass.
 - 2026-09-27: Docs, CI/release workflows, smoke-test script; release build started.
+- 2026-09-27: Release build: NSIS setup.exe (3.1 MB) + MSI (3.9 MB). End-to-end smoke test on the real app: 19/19 checks pass.
 
 ## Blockers
 
