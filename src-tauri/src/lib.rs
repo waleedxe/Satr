@@ -1,6 +1,7 @@
 mod commands;
 mod errors;
 mod filesystem;
+mod fonts;
 mod watcher;
 
 use tauri::{Emitter, Manager};
@@ -29,6 +30,7 @@ pub fn run() {
             commands::unwatch_document,
             commands::allow_document_directory,
             commands::startup_documents,
+            commands::system_fonts,
         ])
         .run(tauri::generate_context!())
         .expect("error while running Satr");

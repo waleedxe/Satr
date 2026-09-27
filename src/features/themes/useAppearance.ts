@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-import type { ContentWidth, FontFamily, ThemePreference } from "../settings/settings";
+import { ensureFontLoaded, fontStack } from "../fonts/fonts";
+import type { ContentWidth, ThemePreference } from "../settings/settings";
+import { languageDir } from "../../i18n";
 import { bridge } from "../../native";
 import { useDocuments } from "../../stores/documentsStore";
 import { useSettings } from "../../stores/settingsStore";
@@ -10,12 +12,6 @@ const WIDTHS: Record<ContentWidth, string> = {
   medium: "780px",
   wide: "980px",
   full: "100%",
-};
-
-const FONTS: Record<FontFamily, string> = {
-  sans: "var(--font-sans)",
-  serif: "var(--font-serif)",
-  mono: "var(--font-mono)",
 };
 
 export function resolveTheme(preference: ThemePreference, systemDark: boolean): "light" | "dark" {
@@ -42,6 +38,8 @@ export function useAppearance(): void {
   const fontSize = useSettings((s) => s.fontSize);
   const contentWidth = useSettings((s) => s.contentWidth);
   const fontFamily = useSettings((s) => s.fontFamily);
+  const headingFont = useSettings((s) => s.headingFont);
+  const language = useSettings((s) => s.language);
   const focusMode = useSettings((s) => s.focusMode);
   const systemDark = useSystemDark();
 
@@ -56,8 +54,23 @@ export function useAppearance(): void {
     const root = document.documentElement.style;
     root.setProperty("--editor-font-size", `${fontSize}px`);
     root.setProperty("--content-width", WIDTHS[contentWidth]);
-    root.setProperty("--editor-font", FONTS[fontFamily]);
-  }, [fontSize, contentWidth, fontFamily]);
+  }, [fontSize, contentWidth]);
+
+  useEffect(() => {
+    const heading = headingFont === "same" ? fontFamily : headingFont;
+    const root = document.documentElement.style;
+    root.setProperty("--editor-font", fontStack(fontFamily));
+    root.setProperty("--heading-font", fontStack(heading));
+    void Promise.all([ensureFontLoaded(fontFamily), ensureFontLoaded(heading)]).catch(
+      () => undefined,
+    );
+  }, [fontFamily, headingFont]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.lang = language;
+    root.dir = languageDir(language);
+  }, [language]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("focus-mode", focusMode);

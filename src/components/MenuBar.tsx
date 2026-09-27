@@ -4,6 +4,8 @@ import { getCommand, runCommand } from "../app/commands";
 import { MENUS } from "../app/menus";
 import type { MenuItem } from "../app/menus";
 import { formatShortcut } from "../app/shortcuts";
+import { commandLabel, useT } from "../i18n";
+import type { MessageKey } from "../i18n";
 import { openPath } from "../features/files/fileActions";
 import { useSettings } from "../stores/settingsStore";
 import { basename } from "../utils/path";
@@ -16,6 +18,7 @@ interface ItemsProps {
 function MenuItems({ items, onDone }: ItemsProps) {
   const recentFiles = useSettings((s) => s.recentFiles);
   const clearRecent = useSettings((s) => s.clearRecent);
+  const t = useT();
 
   return (
     <>
@@ -27,7 +30,7 @@ function MenuItems({ items, onDone }: ItemsProps) {
             <div key={index} className="menu-submenu" role="none">
               <button type="button" className="menu-item" role="menuitem" aria-haspopup="menu">
                 <span className="menu-check" />
-                <span className="menu-label">{item.label}</span>
+                <span className="menu-label">{t(`menu.${item.label}` as MessageKey)}</span>
                 <span className="menu-arrow">›</span>
               </button>
               <div className="menu-dropdown menu-dropdown-sub" role="menu">
@@ -41,11 +44,11 @@ function MenuItems({ items, onDone }: ItemsProps) {
             <div key={index} className="menu-submenu" role="none">
               <button type="button" className="menu-item" role="menuitem" aria-haspopup="menu">
                 <span className="menu-check" />
-                <span className="menu-label">Open Recent</span>
+                <span className="menu-label">{t("menu.openRecent")}</span>
                 <span className="menu-arrow">›</span>
               </button>
               <div className="menu-dropdown menu-dropdown-sub" role="menu">
-                {recentFiles.length === 0 && <div className="menu-empty">No recent files</div>}
+                {recentFiles.length === 0 && <div className="menu-empty">{t("menu.noRecent")}</div>}
                 {recentFiles.map((path) => (
                   <button
                     key={path}
@@ -59,7 +62,9 @@ function MenuItems({ items, onDone }: ItemsProps) {
                     }}
                   >
                     <span className="menu-check" />
-                    <span className="menu-label">{basename(path)}</span>
+                    <span className="menu-label" dir="ltr">
+                      {basename(path)}
+                    </span>
                     <span className="menu-shortcut menu-path">{path}</span>
                   </button>
                 ))}
@@ -76,7 +81,7 @@ function MenuItems({ items, onDone }: ItemsProps) {
                       }}
                     >
                       <span className="menu-check" />
-                      <span className="menu-label">Clear Recent Files</span>
+                      <span className="menu-label">{t("menu.clearRecent")}</span>
                     </button>
                   </>
                 )}
@@ -101,7 +106,7 @@ function MenuItems({ items, onDone }: ItemsProps) {
             }}
           >
             <span className="menu-check">{checked ? "✓" : ""}</span>
-            <span className="menu-label">{command.label}</span>
+            <span className="menu-label">{commandLabel(command)}</span>
             {command.shortcut && (
               <span className="menu-shortcut">{formatShortcut(command.shortcut)}</span>
             )}
@@ -116,6 +121,7 @@ export function MenuBar() {
   const [open, setOpen] = useState<number | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(null), []);
+  const t = useT();
 
   useEffect(() => {
     if (open === null) return;
@@ -146,7 +152,7 @@ export function MenuBar() {
   }, [open]);
 
   return (
-    <div className="menubar" role="menubar" ref={barRef} aria-label="Application menu">
+    <div className="menubar" role="menubar" ref={barRef} aria-label={t("menu.appMenu")}>
       {MENUS.map((menu, index) => (
         <div key={menu.label} className="menubar-entry">
           <button
@@ -166,13 +172,13 @@ export function MenuBar() {
               }
             }}
           >
-            {menu.label}
+            {t(`menu.${menu.label}` as MessageKey)}
           </button>
           {open === index && (
             <div
               className="menu-dropdown"
               role="menu"
-              aria-label={menu.label}
+              aria-label={t(`menu.${menu.label}` as MessageKey)}
               onKeyDown={(event) => {
                 if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
                 event.preventDefault();

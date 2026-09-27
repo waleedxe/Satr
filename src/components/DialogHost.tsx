@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { useT } from "../i18n";
 import { useUi } from "../stores/uiStore";
 
 /** Renders the modal dialog requested through useUi().showDialog. */
@@ -9,6 +10,7 @@ export function DialogHost() {
   const [values, setValues] = useState<Record<string, string>>({});
   const boxRef = useRef<HTMLDivElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
+  const t = useT();
 
   useEffect(() => {
     if (!dialog) return;
@@ -92,7 +94,7 @@ export function DialogHost() {
                     });
                   }}
                 >
-                  Browse…
+                  {t("dialog.browse")}
                 </button>
               )}
             </span>

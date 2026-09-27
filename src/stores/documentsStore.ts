@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import type { LineEnding } from "../editor/markdown";
+import { t } from "../i18n";
 
 export type EditorMode = "wysiwyg" | "source";
 export type ExternalState = null | "modified" | "deleted";
@@ -88,7 +89,7 @@ export const useDocuments = create<DocumentsState>((set, get) => ({
   nextUntitledTitle() {
     const n = get().untitledCounter + 1;
     set({ untitledCounter: n });
-    return n === 1 ? "Untitled" : `Untitled ${n}`;
+    return n === 1 ? t("tabs.untitled") : t("tabs.untitledN", { n });
   },
 
   reset() {

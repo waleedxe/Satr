@@ -9,6 +9,7 @@
   --font-ui: var(--font-sans);
 
   --editor-font: var(--font-sans);
+  --heading-font: var(--editor-font);
   --editor-font-size: 16px;
   --content-width: 780px;
   --editor-padding: 48px;

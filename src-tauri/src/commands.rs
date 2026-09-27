@@ -74,3 +74,9 @@ pub fn startup_documents() -> Vec<String> {
         })
         .collect()
 }
+
+/// Font families installed on this computer.
+#[tauri::command]
+pub async fn system_fonts() -> AppResult<Vec<String>> {
+    blocking(|| Ok(crate::fonts::system_font_families())).await
+}

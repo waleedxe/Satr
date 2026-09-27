@@ -9,6 +9,7 @@ import {
   saveDocument,
   switchMode,
 } from "../features/files/fileActions";
+import { t, useT } from "../i18n";
 import { useDocuments } from "../stores/documentsStore";
 import type { DocumentTab } from "../stores/documentsStore";
 import { useSettings } from "../stores/settingsStore";
@@ -37,9 +38,9 @@ class EditorErrorBoundary extends Component<
     const { tab } = this.props;
     return (
       <div className="editor-error" role="alert">
-        <h2>Something went wrong displaying this document</h2>
+        <h2>{t("doc.crashTitle")}</h2>
         <p>{error.message}</p>
-        <p>Your file on disk has not been changed.</p>
+        <p>{t("doc.crashNote")}</p>
         {tab.mode === "wysiwyg" && (
           <button
             type="button"
@@ -49,7 +50,7 @@ class EditorErrorBoundary extends Component<
               switchMode(tab.id, "source");
             }}
           >
-            Open in source mode
+            {t("doc.openInSource")}
           </button>
         )}
       </div>
@@ -58,19 +59,20 @@ class EditorErrorBoundary extends Component<
 }
 
 function ExternalBanner({ tab }: { tab: DocumentTab }) {
+  const t = useT();
   if (tab.external === "modified") {
     return (
       <div className="banner" role="alert">
-        <span>This file was changed by another program.</span>
+        <span>{t("doc.changedOnDisk")}</span>
         <button type="button" className="button" onClick={() => void reloadDocument(tab.id)}>
-          Reload from disk
+          {t("doc.reload")}
         </button>
         <button
           type="button"
           className="button button-quiet"
           onClick={() => void keepMyVersion(tab.id)}
         >
-          Keep my version
+          {t("doc.keepMine")}
         </button>
       </div>
     );
@@ -78,16 +80,16 @@ function ExternalBanner({ tab }: { tab: DocumentTab }) {
   if (tab.external === "deleted") {
     return (
       <div className="banner banner-warning" role="alert">
-        <span>This file was deleted or moved. Your text is still here.</span>
+        <span>{t("doc.deleted")}</span>
         <button type="button" className="button" onClick={() => void saveDocument(tab.id)}>
-          Save to recreate it
+          {t("doc.recreate")}
         </button>
         <button
           type="button"
           className="button button-quiet"
           onClick={() => void closeDocument(tab.id)}
         >
-          Close
+          {t("doc.close")}
         </button>
       </div>
     );
@@ -115,7 +117,7 @@ function DocumentPane({ tab, active }: { tab: DocumentTab; active: boolean }) {
             <WysiwygEditor key={tab.revision} tab={tab} active={active} />
           </div>
         ) : (
-          <Suspense fallback={<div className="editor-loading">Loading source editor…</div>}>
+          <Suspense fallback={<div className="editor-loading">{t("doc.loadingSource")}</div>}>
             <SourceEditor key={tab.revision} tab={tab} active={active} />
           </Suspense>
         )}

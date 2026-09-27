@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { editorRegistry } from "../features/files/editorRegistry";
 import type { SearchStatus } from "../features/files/editorRegistry";
+import { useT } from "../i18n";
 import { useDocuments } from "../stores/documentsStore";
 import { useUi } from "../stores/uiStore";
 
@@ -16,6 +17,7 @@ export function FindBar() {
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [status, setStatus] = useState<SearchStatus>({ count: 0, current: -1 });
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useT();
 
   const target = () => (activeId ? editorRegistry.get(activeId)?.search : undefined);
 
@@ -51,19 +53,19 @@ export function FindBar() {
     query === ""
       ? ""
       : status.count === 0
-        ? "No results"
-        : `${status.current + 1} of ${status.count}`;
+        ? t("find.noResults")
+        : t("find.count", { current: status.current + 1, count: status.count });
 
   return (
-    <div className="findbar" role="search" aria-label="Find and replace">
+    <div className="findbar" role="search" aria-label={t("find.label")}>
       <div className="findbar-row">
         <input
           ref={inputRef}
           className="findbar-input"
           type="text"
           value={query}
-          placeholder="Find"
-          aria-label="Find"
+          placeholder={t("find.find")}
+          aria-label={t("find.find")}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -83,7 +85,7 @@ export function FindBar() {
           type="button"
           className={`icon-button${caseSensitive ? " is-on" : ""}`}
           aria-pressed={caseSensitive}
-          title="Match case"
+          title={t("find.matchCase")}
           onClick={() => setCaseSensitive((v) => !v)}
         >
           Aa
@@ -91,8 +93,8 @@ export function FindBar() {
         <button
           type="button"
           className="icon-button"
-          title="Previous (Shift+Enter)"
-          aria-label="Previous match"
+          title={t("find.previous")}
+          aria-label={t("find.previous")}
           onClick={() => target() && setStatus(target()!.previous())}
         >
           ↑
@@ -100,8 +102,8 @@ export function FindBar() {
         <button
           type="button"
           className="icon-button"
-          title="Next (Enter)"
-          aria-label="Next match"
+          title={t("find.next")}
+          aria-label={t("find.next")}
           onClick={() => target() && setStatus(target()!.next())}
         >
           ↓
@@ -109,8 +111,8 @@ export function FindBar() {
         <button
           type="button"
           className="icon-button"
-          title="Toggle replace"
-          aria-label="Toggle replace"
+          title={t("find.toggleReplace")}
+          aria-label={t("find.toggleReplace")}
           onClick={() => setFind(true, !replaceOpen)}
         >
           ⇄
@@ -118,8 +120,8 @@ export function FindBar() {
         <button
           type="button"
           className="icon-button"
-          title="Close (Esc)"
-          aria-label="Close find"
+          title={t("find.close")}
+          aria-label={t("find.close")}
           onClick={close}
         >
           ×
@@ -131,8 +133,8 @@ export function FindBar() {
             className="findbar-input"
             type="text"
             value={replacement}
-            placeholder="Replace"
-            aria-label="Replace with"
+            placeholder={t("find.replace")}
+            aria-label={t("find.replaceWith")}
             onChange={(e) => setReplacement(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -151,7 +153,7 @@ export function FindBar() {
             disabled={status.count === 0}
             onClick={() => target() && setStatus(target()!.replace(replacement))}
           >
-            Replace
+            {t("find.replaceOne")}
           </button>
           <button
             type="button"
@@ -164,7 +166,7 @@ export function FindBar() {
               setStatus(t.setQuery(query, caseSensitive));
             }}
           >
-            Replace All
+            {t("find.replaceAll")}
           </button>
         </div>
       )}

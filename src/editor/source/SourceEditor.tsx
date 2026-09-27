@@ -12,6 +12,7 @@ import { editorRegistry } from "../../features/files/editorRegistry";
 import type { EditorHandle } from "../../features/files/editorRegistry";
 import { headingsFromMarkdown } from "../../features/outline/outline";
 import { computeStats } from "../../features/outline/stats";
+import { t } from "../../i18n";
 import { getTab, useDocuments } from "../../stores/documentsStore";
 import type { DocumentTab } from "../../stores/documentsStore";
 import { useEditorStatus } from "../../stores/editorStatusStore";
@@ -99,13 +100,13 @@ export default function SourceEditor({ tab, active }: Props) {
           search({ top: true }),
           EditorView.lineWrapping,
           EditorView.perLineTextDirection.of(true),
-          placeholder("Start writing Markdown…"),
+          placeholder(t("doc.sourcePlaceholder")),
           spellcheckCompartment.current.of(
             EditorView.contentAttributes.of({
               spellcheck: String(useSettings.getState().spellcheck),
             }),
           ),
-          EditorView.contentAttributes.of({ "aria-label": "Markdown source" }),
+          EditorView.contentAttributes.of({ "aria-label": t("doc.sourceLabel") }),
           theme,
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {

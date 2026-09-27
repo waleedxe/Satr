@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { editorRegistry } from "../features/files/editorRegistry";
 import { openFolderDialog, openPath } from "../features/files/fileActions";
+import { useT } from "../i18n";
 import { bridge } from "../native";
 import type { DirEntry } from "../native";
 import { useDocuments } from "../stores/documentsStore";
@@ -14,16 +15,17 @@ function Outline() {
   const activeHeading = useEditorStatus((s) => s.activeHeading);
   const tabId = useEditorStatus((s) => s.tabId);
   const activeId = useDocuments((s) => s.activeId);
+  const t = useT();
 
   if (!activeId || tabId !== activeId) {
-    return <p className="sidebar-empty">Open a document to see its outline.</p>;
+    return <p className="sidebar-empty">{t("sidebar.noDocument")}</p>;
   }
   if (headings.length === 0) {
-    return <p className="sidebar-empty">No headings yet. Start a line with # to add one.</p>;
+    return <p className="sidebar-empty">{t("sidebar.noHeadings")}</p>;
   }
   const minLevel = Math.min(...headings.map((h) => h.level));
   return (
-    <nav aria-label="Document outline">
+    <nav aria-label={t("sidebar.outlineLabel")}>
       <ul className="outline">
         {headings.map((heading, index) => (
           <li key={index}>
@@ -34,7 +36,7 @@ function Outline() {
               onClick={() => editorRegistry.get(activeId)?.scrollToHeading(index)}
               dir="auto"
             >
-              {heading.text || <em className="outline-untitled">Untitled heading</em>}
+              {heading.text || <em className="outline-untitled">{t("sidebar.untitledHeading")}</em>}
             </button>
           </li>
         ))}
@@ -54,7 +56,8 @@ function DirectoryTree({ path, depth }: TreeProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const tabs = useDocuments((s) => s.tabs);
   const activeId = useDocuments((s) => s.activeId);
-  const activePath = tabs.find((t) => t.id === activeId)?.path ?? null;
+  const activePath = tabs.find((tab) => tab.id === activeId)?.path ?? null;
+  const t = useT();
 
   const load = useCallback(() => {
     bridge()
@@ -63,15 +66,15 @@ function DirectoryTree({ path, depth }: TreeProps) {
         setEntries(list);
         setError(null);
       })
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : "Could not read folder"));
-  }, [path]);
+      .catch(() => setError(t("sidebar.readError")));
+  }, [path, t]);
 
   useEffect(load, [load]);
 
   if (error) return <p className="sidebar-empty">{error}</p>;
-  if (!entries) return <p className="sidebar-empty">Loading…</p>;
+  if (!entries) return <p className="sidebar-empty">{t("sidebar.loading")}</p>;
   if (entries.length === 0 && depth === 0) {
-    return <p className="sidebar-empty">No Markdown files in this folder.</p>;
+    return <p className="sidebar-empty">{t("sidebar.emptyFolder")}</p>;
   }
   return (
     <ul className="file-tree" role={depth === 0 ? "tree" : "group"}>
@@ -101,7 +104,9 @@ function DirectoryTree({ path, depth }: TreeProps) {
               <span className="file-icon" aria-hidden="true">
                 {entry.isDir ? (open ? "▾" : "▸") : "•"}
               </span>
-              <span className="file-name">{entry.name}</span>
+              <span className="file-name" dir="ltr">
+                {entry.name}
+              </span>
             </button>
             {entry.isDir && open && <DirectoryTree path={entry.path} depth={depth + 1} />}
           </li>
@@ -115,13 +120,14 @@ function Files() {
   const folder = useSettings((s) => s.workspaceFolder);
   const update = useSettings((s) => s.update);
   const [refreshKey, setRefreshKey] = useState(0);
+  const t = useT();
 
   if (!folder) {
     return (
       <div className="sidebar-empty">
-        <p>No folder open.</p>
+        <p>{t("sidebar.noFolder")}</p>
         <button type="button" className="button" onClick={() => void openFolderDialog()}>
-          Open Folder…
+          {t("sidebar.openFolder")}
         </button>
       </div>
     );
@@ -135,8 +141,8 @@ function Files() {
         <button
           type="button"
           className="icon-button"
-          title="Refresh"
-          aria-label="Refresh folder"
+          title={t("sidebar.refresh")}
+          aria-label={t("sidebar.refresh")}
           onClick={() => setRefreshKey((k) => k + 1)}
         >
           ⟳
@@ -144,8 +150,8 @@ function Files() {
         <button
           type="button"
           className="icon-button"
-          title="Close folder"
-          aria-label="Close folder"
+          title={t("sidebar.closeFolder")}
+          aria-label={t("sidebar.closeFolder")}
           onClick={() => update({ workspaceFolder: null })}
         >
           ×
@@ -159,9 +165,10 @@ function Files() {
 export function Sidebar() {
   const panel = useSettings((s) => s.sidebarPanel);
   const update = useSettings((s) => s.update);
+  const t = useT();
 
   return (
-    <aside className="sidebar" aria-label="Sidebar">
+    <aside className="sidebar" aria-label={t("sidebar.label")}>
       <div className="sidebar-tabs" role="tablist">
         <button
           type="button"
@@ -170,7 +177,7 @@ export function Sidebar() {
           className={`sidebar-tab${panel === "outline" ? " is-active" : ""}`}
           onClick={() => update({ sidebarPanel: "outline" })}
         >
-          Outline
+          {t("sidebar.outline")}
         </button>
         <button
           type="button"
@@ -179,7 +186,7 @@ export function Sidebar() {
           className={`sidebar-tab${panel === "files" ? " is-active" : ""}`}
           onClick={() => update({ sidebarPanel: "files" })}
         >
-          Files
+          {t("sidebar.files")}
         </button>
       </div>
       <div className="sidebar-body" role="tabpanel">

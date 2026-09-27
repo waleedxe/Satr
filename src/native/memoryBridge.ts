@@ -115,6 +115,9 @@ export class MemoryBridge implements NativeBridge {
   async startupDocuments() {
     return this.startup;
   }
+  async systemFonts() {
+    return ["Arial", "Segoe UI", "Times New Roman"];
+  }
 
   async showOpenDialog() {
     return this.openDialogResults.shift() ?? null;

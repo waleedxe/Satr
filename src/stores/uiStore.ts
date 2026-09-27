@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+import { t } from "../i18n";
+
 export interface DialogButton {
   id: string;
   label: string;
@@ -105,12 +107,12 @@ export const useUi = create<UiState>((set, get) => ({
 /** Save / Don't Save / Cancel prompt for a document with unsaved changes. */
 export async function confirmUnsaved(title: string): Promise<"save" | "discard" | "cancel"> {
   const result = await useUi.getState().showDialog({
-    title: "Save changes?",
-    message: `Do you want to save the changes you made to “${title}”? Your changes will be lost if you don't save them.`,
+    title: t("unsaved.title"),
+    message: t("unsaved.message", { title }),
     buttons: [
-      { id: "save", label: "Save", variant: "primary" },
-      { id: "discard", label: "Don't Save", variant: "danger" },
-      { id: "cancel", label: "Cancel" },
+      { id: "save", label: t("unsaved.save"), variant: "primary" },
+      { id: "discard", label: t("unsaved.discard"), variant: "danger" },
+      { id: "cancel", label: t("dialog.cancel") },
     ],
     cancelId: "cancel",
   });

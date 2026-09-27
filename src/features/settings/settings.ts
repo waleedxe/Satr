@@ -1,15 +1,20 @@
 import { samePath } from "../../utils/path";
+import { isValidFontId } from "../fonts/fonts";
 
 export type ThemePreference = "system" | "light" | "dark";
 export type ContentWidth = "narrow" | "medium" | "wide" | "full";
-export type FontFamily = "sans" | "serif" | "mono";
+export type UiLanguage = "en" | "ar";
 export type SidebarPanel = "outline" | "files";
 
 export interface Settings {
+  language: UiLanguage;
   theme: ThemePreference;
   fontSize: number;
   contentWidth: ContentWidth;
-  fontFamily: FontFamily;
+  /** Font id: "sans" | "serif" | "mono", a bundled font id, or "system:<family>". */
+  fontFamily: string;
+  /** Font id for headings, or "same" to use the text font. */
+  headingFont: string;
   autosave: boolean;
   focusMode: boolean;
   typewriterMode: boolean;
@@ -25,10 +30,12 @@ export const MAX_FONT_SIZE = 28;
 export const MAX_RECENT_FILES = 12;
 
 export const DEFAULT_SETTINGS: Settings = {
+  language: "en",
   theme: "system",
   fontSize: 16,
   contentWidth: "medium",
   fontFamily: "sans",
+  headingFont: "same",
   autosave: false,
   focusMode: false,
   typewriterMode: false,
@@ -59,10 +66,15 @@ export function sanitizeSettings(raw: unknown): Settings {
   const r = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
   const d = DEFAULT_SETTINGS;
   return {
+    language: oneOf(r.language, ["en", "ar"], d.language),
     theme: oneOf(r.theme, ["system", "light", "dark"], d.theme),
     fontSize: typeof r.fontSize === "number" ? clampFontSize(r.fontSize) : d.fontSize,
     contentWidth: oneOf(r.contentWidth, ["narrow", "medium", "wide", "full"], d.contentWidth),
-    fontFamily: oneOf(r.fontFamily, ["sans", "serif", "mono"], d.fontFamily),
+    fontFamily: isValidFontId(r.fontFamily) ? r.fontFamily : d.fontFamily,
+    headingFont:
+      r.headingFont === "same" || isValidFontId(r.headingFont)
+        ? (r.headingFont as string)
+        : d.headingFont,
     autosave: bool(r.autosave, d.autosave),
     focusMode: bool(r.focusMode, d.focusMode),
     typewriterMode: bool(r.typewriterMode, d.typewriterMode),

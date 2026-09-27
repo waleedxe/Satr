@@ -14,6 +14,7 @@ import {
   saveDocumentAs,
   switchMode,
 } from "../features/files/fileActions";
+import { t } from "../i18n";
 import { bridge } from "../native";
 import { getActiveTab, useDocuments } from "../stores/documentsStore";
 import { useSettings } from "../stores/settingsStore";
@@ -74,16 +75,25 @@ async function promptLink(): Promise<void> {
   if (!editor && !view) return;
   const currentHref = editor ? String(editor.getAttributes("link").href ?? "") : "";
   const emptySelection = editor ? editor.state.selection.empty : view!.state.selection.main.empty;
-  const fields = [{ id: "href", label: "URL", value: currentHref, placeholder: "https://" }];
+  const fields = [
+    { id: "href", label: t("link.url"), value: currentHref, placeholder: "https://" },
+  ];
   if (emptySelection && !currentHref)
-    fields.unshift({ id: "text", label: "Text", value: "", placeholder: "Link text" });
+    fields.unshift({
+      id: "text",
+      label: t("link.text"),
+      value: "",
+      placeholder: t("link.textPlaceholder"),
+    });
   const result = await useUi.getState().showDialog({
-    title: currentHref ? "Edit Link" : "Insert Link",
+    title: currentHref ? t("link.edit") : t("link.insert"),
     fields,
     buttons: [
-      { id: "ok", label: currentHref ? "Update" : "Insert", variant: "primary" },
-      ...(currentHref ? [{ id: "remove", label: "Remove Link", variant: "danger" as const }] : []),
-      { id: "cancel", label: "Cancel" },
+      { id: "ok", label: currentHref ? t("link.update") : t("dialog.insert"), variant: "primary" },
+      ...(currentHref
+        ? [{ id: "remove", label: t("link.remove"), variant: "danger" as const }]
+        : []),
+      { id: "cancel", label: t("dialog.cancel") },
     ],
     cancelId: "cancel",
   });
@@ -117,23 +127,21 @@ async function promptImage(): Promise<void> {
   if (!editor && !view) return;
   const docPath = getActiveTab()?.path ?? null;
   const result = await useUi.getState().showDialog({
-    title: "Insert Image",
-    message: docPath
-      ? undefined
-      : "Tip: save the document first so local images can use relative paths.",
+    title: t("image.title"),
+    message: docPath ? undefined : t("image.tip"),
     fields: [
       {
         id: "src",
-        label: "Image path or URL",
+        label: t("image.src"),
         value: "",
-        placeholder: "images/picture.png or https://…",
+        placeholder: t("image.srcPlaceholder"),
         browse: bridge().isDesktop ? () => browseForImage(docPath) : undefined,
       },
-      { id: "alt", label: "Description (alt text)", value: "" },
+      { id: "alt", label: t("image.alt"), value: "" },
     ],
     buttons: [
-      { id: "ok", label: "Insert", variant: "primary" },
-      { id: "cancel", label: "Cancel" },
+      { id: "ok", label: t("dialog.insert"), variant: "primary" },
+      { id: "cancel", label: t("dialog.cancel") },
     ],
     cancelId: "cancel",
   });
@@ -713,11 +721,11 @@ export function runCommand(id: string): void {
   if (command.enabled && !command.enabled()) return;
   void Promise.resolve(command.run()).catch((error: unknown) => {
     console.error(`Command ${id} failed`, error);
-    useUi
-      .getState()
-      .toast(
-        `Something went wrong: ${error instanceof Error ? error.message : String(error)}`,
-        "error",
-      );
+    useUi.getState().toast(
+      t("toast.commandFailed", {
+        message: error instanceof Error ? error.message : String(error),
+      }),
+      "error",
+    );
   });
 }

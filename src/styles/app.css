@@ -226,7 +226,7 @@ kbd {
 .menu-dropdown {
   position: absolute;
   top: calc(100% + 2px);
-  left: 0;
+  inset-inline-start: 0;
   z-index: 50;
   min-width: 250px;
   padding: 4px;
@@ -243,7 +243,7 @@ kbd {
 .menu-dropdown-sub {
   display: none;
   top: -5px;
-  left: calc(100% - 4px);
+  inset-inline-start: calc(100% - 4px);
   max-width: 460px;
 }
 
@@ -257,11 +257,12 @@ kbd {
   align-items: center;
   width: 100%;
   min-height: 28px;
-  padding: 0 10px 0 4px;
+  padding-block: 0;
+  padding-inline: 4px 10px;
   border: none;
   border-radius: var(--radius-small);
   background: transparent;
-  text-align: left;
+  text-align: start;
   cursor: default;
 }
 
@@ -288,7 +289,7 @@ kbd {
 }
 
 .menu-shortcut {
-  margin-left: 24px;
+  margin-inline-start: 24px;
   color: var(--text-muted);
   font-size: 12px;
 }
@@ -303,12 +304,15 @@ kbd {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  direction: rtl;
-  text-align: left;
+  direction: ltr;
 }
 
 .menu-arrow {
-  margin-left: 16px;
+  margin-inline-start: 16px;
+}
+
+[dir="rtl"] .menu-arrow {
+  transform: scaleX(-1);
 }
 
 .menu-separator {
@@ -340,7 +344,8 @@ kbd {
   gap: 6px;
   max-width: 220px;
   height: 30px;
-  padding: 0 6px 0 12px;
+  padding-block: 0;
+  padding-inline: 12px 6px;
   border: 1px solid transparent;
   border-bottom: none;
   border-radius: var(--radius) var(--radius) 0 0;
@@ -436,7 +441,7 @@ kbd {
   flex-direction: column;
   width: var(--sidebar-width);
   flex-shrink: 0;
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
   background: var(--bg-subtle);
   min-height: 0;
 }
@@ -595,7 +600,7 @@ kbd {
 .findbar {
   position: absolute;
   top: 10px;
-  right: 24px;
+  inset-inline-end: 24px;
   z-index: 20;
   display: flex;
   flex-direction: column;
@@ -769,7 +774,7 @@ kbd {
 
 .setting output {
   color: var(--text-muted);
-  margin-left: 6px;
+  margin-inline-start: 6px;
 }
 
 .setting input[type="range"] {
@@ -797,7 +802,7 @@ kbd {
 }
 
 .shortcuts td:last-child {
-  text-align: right;
+  text-align: end;
 }
 
 .shortcuts-subtitle {
@@ -817,7 +822,7 @@ kbd {
 
 .toasts {
   position: fixed;
-  right: 20px;
+  inset-inline-end: 20px;
   bottom: 40px;
   z-index: 200;
   display: flex;
@@ -832,7 +837,7 @@ kbd {
   gap: 10px;
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border-inline-start: 3px solid var(--accent);
   border-radius: var(--radius);
   background: var(--bg);
   box-shadow: var(--shadow);
@@ -845,11 +850,11 @@ kbd {
 }
 
 .toast-error {
-  border-left-color: var(--danger);
+  border-inline-start-color: var(--danger);
 }
 
 .toast-success {
-  border-left-color: #2da44e;
+  border-inline-start-color: #2da44e;
 }
 
 .toast-close {
@@ -922,7 +927,7 @@ kbd {
   border: none;
   border-radius: var(--radius);
   background: transparent;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -988,4 +993,25 @@ kbd {
   margin-inline-start: 8px;
   color: var(--text-muted);
   font-weight: 500;
+}
+
+/* Markdown source stays left-to-right; Arabic lines still flow per line. */
+.source-editor .cm-editor {
+  direction: ltr;
+}
+
+.font-preview {
+  grid-column: 1 / -1;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.font-preview-heading {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 650;
 }

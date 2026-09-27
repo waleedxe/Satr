@@ -1,4 +1,5 @@
 import { applyLineEnding, normalizeLineEndings } from "../../editor/markdown";
+import { t } from "../../i18n";
 import { NativeError, bridge } from "../../native";
 import { createTabId, getTab, useDocuments } from "../../stores/documentsStore";
 import type { DocumentTab, EditorMode } from "../../stores/documentsStore";
@@ -17,14 +18,14 @@ import {
 } from "../../utils/path";
 import { editorRegistry } from "./editorRegistry";
 
-export const MARKDOWN_FILTERS = [
-  { name: "Markdown", extensions: ["md", "markdown", "mdown", "mkd", "mkdn"] },
-  { name: "Text", extensions: ["txt"] },
-];
+function markdownFilters() {
+  return [
+    { name: t("files.markdown"), extensions: ["md", "markdown", "mdown", "mkd", "mkdn"] },
+    { name: t("files.text"), extensions: ["txt"] },
+  ];
+}
 
-const IMAGE_FILTERS = [
-  { name: "Images", extensions: ["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "avif"] },
-];
+const IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "avif"];
 
 function toast(message: string, kind: "info" | "success" | "error" = "info") {
   useUi.getState().toast(message, kind);
@@ -34,15 +35,15 @@ function describeError(error: unknown): string {
   const e = NativeError.from(error);
   switch (e.kind) {
     case "notFound":
-      return "The file could not be found. It may have been moved or deleted.";
+      return t("error.notFound");
     case "permissionDenied":
-      return "Permission denied. The file may be read-only or in use by another program.";
+      return t("error.permission");
     case "invalidEncoding":
-      return "This file is not UTF-8 text and cannot be opened safely.";
+      return t("error.encoding");
     case "tooLarge":
-      return "This file is too large to open.";
+      return t("error.tooLarge");
     case "unsupportedType":
-      return "Only Markdown and text files can be opened.";
+      return t("error.unsupported");
     default:
       return e.message;
   }
@@ -120,7 +121,7 @@ export async function openPath(path: string): Promise<string | null> {
   } catch (error) {
     const e = NativeError.from(error);
     if (e.kind === "notFound") settings.removeRecent(path);
-    toast(`Could not open ${basename(path)}. ${describeError(error)}`, "error");
+    toast(t("toast.openFailed", { name: basename(path), reason: describeError(error) }), "error");
     return null;
   }
   // The same file may have been opened while we were reading it.
@@ -163,9 +164,9 @@ export async function openDocumentsDialog(): Promise<void> {
     .getState()
     .tabs.find((t) => t.id === useDocuments.getState().activeId);
   const paths = await bridge().showOpenDialog({
-    title: "Open Markdown",
+    title: t("files.openTitle"),
     multiple: true,
-    filters: MARKDOWN_FILTERS,
+    filters: markdownFilters(),
     defaultPath: active?.path ? dirname(active.path) : undefined,
   });
   if (!paths) return;
@@ -173,7 +174,10 @@ export async function openDocumentsDialog(): Promise<void> {
 }
 
 export async function openFolderDialog(): Promise<void> {
-  const paths = await bridge().showOpenDialog({ title: "Open Folder", directory: true });
+  const paths = await bridge().showOpenDialog({
+    title: t("files.openFolderTitle"),
+    directory: true,
+  });
   const folder = paths?.[0];
   if (!folder) return;
   useSettings.getState().update({
@@ -199,7 +203,7 @@ async function writeTab(tabId: string, path: string): Promise<boolean> {
   try {
     mtime = await bridge().writeDocument(path, output, tab.hasBom);
   } catch (error) {
-    toast(`Could not save ${basename(path)}. ${describeError(error)}`, "error");
+    toast(t("toast.saveFailed", { name: basename(path), reason: describeError(error) }), "error");
     return false;
   }
 
@@ -243,15 +247,15 @@ async function saveDocumentAsInner(tabId: string): Promise<boolean> {
   if (!tab) return false;
   const suggested = tab.path ?? `${stripExtension(tab.title)}.md`;
   const path = await bridge().showSaveDialog({
-    title: "Save As",
+    title: t("files.saveAsTitle"),
     defaultPath: suggested,
-    filters: MARKDOWN_FILTERS,
+    filters: markdownFilters(),
   });
   if (!path) return false;
   const finalPath = isMarkdownPath(path) ? path : `${path}.md`;
   const other = findTabByPath(finalPath);
   if (other && other.id !== tabId) {
-    toast(`${basename(finalPath)} is already open in another tab. Close it first.`, "error");
+    toast(t("toast.alreadyOpen", { name: basename(finalPath) }), "error");
     return false;
   }
   return writeTab(tabId, finalPath);
@@ -333,7 +337,7 @@ export async function reloadDocument(tabId: string): Promise<boolean> {
     });
     return true;
   } catch (error) {
-    toast(`Could not reload ${tab.title}. ${describeError(error)}`, "error");
+    toast(t("toast.reloadFailed", { name: tab.title, reason: describeError(error) }), "error");
     return false;
   }
 }
@@ -379,7 +383,7 @@ export async function handleExternalChange(path: string): Promise<void> {
       return;
     }
     if (!current.dirty) {
-      if (await reloadDocument(tab.id)) toast(`${current.title} was changed on disk and reloaded.`);
+      if (await reloadDocument(tab.id)) toast(t("toast.reloaded", { name: current.title }));
     } else if (current.external !== "modified") {
       useDocuments.getState().updateTab(tab.id, { external: "modified" });
     }
@@ -408,7 +412,7 @@ export async function handleDroppedPaths(paths: string[]): Promise<void> {
     const tab = useDocuments.getState().tabs.find((t) => t.id === useDocuments.getState().activeId);
     const editor = tab ? editorRegistry.get(tab.id)?.editor : null;
     if (!tab || !editor) {
-      toast("Open a document in the visual editor to insert images.");
+      toast(t("toast.imagesNeedEditor"));
       return;
     }
     for (const image of images) {
@@ -423,7 +427,7 @@ export async function handleDroppedPaths(paths: string[]): Promise<void> {
     }
   }
   const ignored = paths.length - images.length - docs.length;
-  if (ignored > 0) toast("Only Markdown files and images can be dropped here.");
+  if (ignored > 0) toast(t("toast.onlyMarkdownAndImages"));
 }
 
 /** Path to write into Markdown for an image: relative to the document when possible. */
@@ -437,8 +441,8 @@ export function imageReference(docPath: string | null, imagePath: string): strin
 
 export async function browseForImage(docPath: string | null): Promise<string | null> {
   const paths = await bridge().showOpenDialog({
-    title: "Insert Image",
-    filters: IMAGE_FILTERS,
+    title: t("files.insertImageTitle"),
+    filters: [{ name: t("files.images"), extensions: IMAGE_EXTENSIONS }],
     defaultPath: docPath ? dirname(docPath) : undefined,
   });
   const image = paths?.[0];
@@ -453,17 +457,17 @@ export async function openLink(href: string, docPath: string | null): Promise<vo
     return;
   }
   if (/^[a-z][a-z0-9+.-]*:/i.test(url) && !/^[a-zA-Z]:[\\/]/.test(url)) {
-    toast("This link type cannot be opened.");
+    toast(t("toast.linkType"));
     return;
   }
   const target = decodeURI(url.split("#")[0] ?? "");
   if (!target) return;
   if (!isMarkdownPath(target)) {
-    toast("Only web links and Markdown files can be opened from a document.");
+    toast(t("toast.linkOnlyMarkdown"));
     return;
   }
   if (!isAbsolutePath(target) && !docPath) {
-    toast("Save the document first to follow relative links.");
+    toast(t("toast.saveFirstForLinks"));
     return;
   }
   const full = isAbsolutePath(target) ? target : joinPath(dirname(docPath!), target);

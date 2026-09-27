@@ -18,7 +18,9 @@ _Screenshots will be added before the first public release._
 - **Math** with KaTeX — inline `$…$` and block `$$…$$`
 - **Find and replace** (Ctrl+F / Ctrl+H)
 - **Tabs**, **recent files**, **open folder** file explorer, **document outline**
-- **Light, dark and system themes**, adjustable font size, font family and content width
+- **Light, dark and system themes**, adjustable font size and content width
+- **Fonts**: five bundled Arabic-friendly fonts (IBM Plex Sans Arabic, Cairo, Tajawal, Noto Naskh Arabic, Amiri), any font installed on the computer, and a separate heading font
+- **Interface languages**: English (default) and Arabic with a fully mirrored right-to-left layout; adding a language is one translation file in `src/i18n/`
 - **Focus mode** (F8), **typewriter mode** (F9), optional **autosave**
 - Word count, character count and reading time
 - Unsaved-change protection, external change detection (reload / keep mine), deleted-file handling
@@ -36,6 +38,12 @@ Download the latest `Satr_x.y.z_x64-setup.exe` (or `.msi`) from the [Releases](.
 - Supported: Windows 10, Windows 11 and Windows Server 2019/2022 (x64).
 - Requires Microsoft Edge WebView2 (pre-installed on Windows 11 and current Windows 10; the installer downloads it if missing).
 - Builds are currently **not code-signed**, so Windows SmartScreen shows a warning: choose **More info → Run anyway**.
+
+## Adding a language
+
+1. Copy `src/i18n/ar.ts` to a new file (e.g. `fr.ts`) and translate the strings. TypeScript reports any missing key.
+2. Register it in `LANGUAGES` and `dictionaries` in `src/i18n/index.ts`, and add its id to the `language` check in `src/features/settings/settings.ts`.
+3. Run `npm test`; the translation tests check that every string and placeholder is present.
 
 ## Development
 

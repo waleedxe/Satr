@@ -12,6 +12,7 @@ import { StatusBar } from "./components/StatusBar";
 import { TabBar } from "./components/TabBar";
 import { Toasts } from "./components/Toasts";
 import { useAppearance, useWindowTitle } from "./features/themes/useAppearance";
+import { t } from "./i18n";
 import { useDocuments } from "./stores/documentsStore";
 import { useSettings } from "./stores/settingsStore";
 
@@ -55,7 +56,7 @@ export default function App() {
   if (error) {
     return (
       <div className="fatal" role="alert">
-        <h1>Satr could not start</h1>
+        <h1>{t("app.fatal")}</h1>
         <p>{error}</p>
       </div>
     );

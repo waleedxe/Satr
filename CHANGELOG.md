@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Arabic user interface with a mirrored right-to-left layout (English stays the default).
+- Font picker: bundled Arabic fonts, installed system fonts and a separate heading font.
+
+### Fixed
+- Arabic lists, task items, quotes and tables now lay out right-to-left.
+- File names with Arabic characters display correctly in tabs and lists.
+
 ## [0.1.0] - 2026-09-27
 
 ### Added

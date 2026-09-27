@@ -17,6 +17,7 @@ import { openLink } from "../features/files/fileActions";
 import { headingPositions, headingsFromDoc } from "../features/outline/outline";
 import { computeStats } from "../features/outline/stats";
 import { Search, createSearchTarget } from "../features/search/searchExtension";
+import { t } from "../i18n";
 import { bridge } from "../native";
 import { getTab, useDocuments } from "../stores/documentsStore";
 import type { DocumentTab } from "../stores/documentsStore";
@@ -99,7 +100,7 @@ export function WysiwygEditor({ tab, active }: Props) {
             TextDirection,
             Search,
             WritingModes.configure({ isTypewriter: () => useSettings.getState().typewriterMode }),
-            Placeholder.configure({ placeholder: "Start writing…" }),
+            Placeholder.configure({ placeholder: () => t("doc.placeholder") }),
           ],
           content: parsed.doc,
           enableInputRules: true,
@@ -108,7 +109,7 @@ export function WysiwygEditor({ tab, active }: Props) {
             attributes: {
               class: "markdown-body",
               spellcheck: String(useSettings.getState().spellcheck),
-              "aria-label": "Document editor",
+              "aria-label": t("doc.editorLabel"),
               role: "textbox",
               "aria-multiline": "true",
             },
@@ -219,16 +220,16 @@ export function WysiwygEditor({ tab, active }: Props) {
   if (error) {
     return (
       <div className="editor-error" role="alert">
-        <h2>This document could not be displayed</h2>
+        <h2>{t("doc.renderError")}</h2>
         <p>{error}</p>
-        <p>You can still edit it in source mode.</p>
+        <p>{t("doc.renderHint")}</p>
       </div>
     );
   }
 
   return (
     <>
-      {!editor && <div className="editor-loading">Loading document…</div>}
+      {!editor && <div className="editor-loading">{t("doc.loading")}</div>}
       <div ref={mountRef} className="wysiwyg-mount" />
     </>
   );

@@ -41,6 +41,7 @@ export const tauriBridge: NativeBridge = {
   allowDocumentDirectory: (path) => call<void>("allow_document_directory", { path }),
   toAssetUrl: (path) => convertFileSrc(path),
   startupDocuments: () => call<string[]>("startup_documents"),
+  systemFonts: () => call<string[]>("system_fonts"),
 
   async showOpenDialog(options) {
     const result = await open({

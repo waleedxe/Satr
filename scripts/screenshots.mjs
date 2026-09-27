@@ -123,6 +123,28 @@ await sleep(400);
 await page.screenshot({ path: join(out, "settings.png") });
 await page.keyboard.press("Escape");
 
+// Arabic interface with a bundled Arabic font.
+await setTheme(page, "Light Theme");
+await page.keyboard.press("Control+,");
+await page.selectOption("#setting-language", "ar");
+await page.selectOption("#setting-font", "ibm-plex-arabic");
+await page.selectOption("#setting-heading-font", "cairo");
+await sleep(800);
+await page.screenshot({ path: join(out, "settings-ar.png") });
+await page.keyboard.press("Escape");
+await sleep(300);
+await page.screenshot({ path: join(out, "arabic-ui.png") });
+await page.click(".menubar-button >> nth=0");
+await sleep(300);
+await page.screenshot({ path: join(out, "menu-ar.png") });
+await page.keyboard.press("Escape");
+
+// Restore defaults for the next run.
+await page.keyboard.press("Control+,");
+await page.selectOption("#setting-language", "en");
+await page.selectOption("#setting-font", "sans");
+await page.selectOption("#setting-heading-font", "same");
+await page.keyboard.press("Escape");
 await setTheme(page, "System Theme");
 await app.browser.close();
 app.child.kill();

@@ -78,6 +78,8 @@ export interface NativeBridge {
   allowDocumentDirectory(path: string): Promise<void>;
   toAssetUrl(path: string): string;
   startupDocuments(): Promise<string[]>;
+  /** Font family names installed on the computer. */
+  systemFonts(): Promise<string[]>;
 
   showOpenDialog(options: OpenDialogOptions): Promise<string[] | null>;
   showSaveDialog(options: SaveDialogOptions): Promise<string | null>;
