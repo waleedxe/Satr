@@ -12,6 +12,10 @@ jobs:
   windows:
     name: Windows installer
     runs-on: windows-latest
+    # Optional code signing: the signing steps below run only when the
+    # WINDOWS_CERTIFICATE secret is set. See docs/CODE_SIGNING.md.
+    env:
+      HAS_CERT: ${{ secrets.WINDOWS_CERTIFICATE != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -30,8 +34,43 @@ jobs:
 
       - run: npm test
 
-      # Code signing: add WINDOWS_CERTIFICATE / WINDOWS_CERTIFICATE_PASSWORD
-      # secrets and a `bundle.windows.certificateThumbprint` (see README).
+      # --- Optional Windows code signing (no-op without the secrets) ---------
+      # WINDOWS_CERTIFICATE is a base64-encoded .pfx; see docs/CODE_SIGNING.md.
+      - name: Import Windows code-signing certificate
+        if: env.HAS_CERT == 'true'
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          $pfx = Join-Path $env:RUNNER_TEMP "codesign.pfx"
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
+          $password = ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText
+          $cert = @(Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password $password) |
+            Where-Object { $_.HasPrivateKey } | Select-Object -First 1
+          Remove-Item $pfx -Force
+          if (-not $cert) { throw "No certificate with a private key was imported from WINDOWS_CERTIFICATE." }
+          "WINDOWS_CERT_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "Imported signing certificate $($cert.Thumbprint)"
+
+      # Tauri signs with the certificate whose thumbprint is set in
+      # bundle.windows.certificateThumbprint. Writing the platform config only
+      # when a certificate was imported keeps the default build unsigned.
+      - name: Enable Tauri code signing
+        if: env.HAS_CERT == 'true'
+        shell: pwsh
+        run: |
+          $config = @{
+            bundle = @{
+              windows = @{
+                certificateThumbprint = $env:WINDOWS_CERT_THUMBPRINT
+                digestAlgorithm       = "sha256"
+                timestampUrl          = "http://timestamp.digicert.com"
+              }
+            }
+          } | ConvertTo-Json -Depth 5
+          [IO.File]::WriteAllText("src-tauri/tauri.windows.conf.json", $config)
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
