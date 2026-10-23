@@ -82,5 +82,8 @@
     "vitest": "^4.1.11"
   },
   "description": "A fast, local-first Markdown editor",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12"
+  }
 }

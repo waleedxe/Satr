@@ -45,8 +45,8 @@
   "bundle": {
     "active": true,
     "targets": ["nsis", "msi"],
-    "publisher": "Satr contributors",
-    "copyright": "Copyright (c) Satr contributors",
+    "publisher": "Waleed",
+    "copyright": "Copyright (c) 2026 Waleed",
     "category": "Productivity",
     "shortDescription": "A fast, local-first Markdown editor",
     "longDescription": "Satr is a fast, offline, local-first Markdown editor with a distraction-free writing experience.",

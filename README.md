@@ -8,6 +8,12 @@ A fast, local-first Markdown editor for Windows (with a cross-platform architect
 
 _Screenshots will be added before the first public release._
 
+## Download
+
+Download the latest `.exe` or `.msi` installer from the [Releases](../../releases/latest) page and run it.
+
+Builds are currently **not code-signed**, so Windows SmartScreen shows a warning: choose **More info → Run anyway**.
+
 ## Features
 
 - **Visual (WYSIWYG) editing** with Markdown typing shortcuts (`#`, `-`, `1.`, `[ ]`, `>`, ` ``` `, `---`, `$$`, `**bold**`, …)
