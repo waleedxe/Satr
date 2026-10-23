@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Satr — a fast, local-first Markdown editor for Windows</title>
+<meta name="description" content="Satr is a fast, offline, local-first Markdown editor for Windows with WYSIWYG and source modes, lossless saving, tables, math, code highlighting and Arabic support." />
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0d1117; color: #c9d1d9;
+         font: 16px/1.6 system-ui, "Segoe UI", sans-serif; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 56px 24px 80px; }
+  h1 { font-size: 42px; margin: 0 0 6px; color: #e6edf3; letter-spacing: -0.5px; }
+  h1 .ar { font-size: 26px; color: #8b949e; font-weight: 400; }
+  .tag { font-size: 19px; color: #8b949e; margin: 0 0 28px; }
+  .btn { display: inline-block; background: #238636; color: #fff; text-decoration: none;
+         padding: 12px 22px; border-radius: 8px; font-weight: 600; margin: 0 10px 10px 0; }
+  .btn:hover { background: #2ea043; }
+  .btn.secondary { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; }
+  .btn.secondary:hover { background: #30363d; }
+  .note { font-size: 13px; color: #8b949e; margin: 14px 0 34px; }
+  h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #8b949e;
+       margin: 34px 0 12px; }
+  ul { padding-left: 20px; margin: 0; }
+  li { margin: 5px 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 28px; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #21262d;
+           font-size: 14px; color: #8b949e; }
+  a { color: #58a6ff; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Satr <span class="ar">سطر</span></h1>
+  <p class="tag">A fast, local-first Markdown editor for Windows. It feels like writing, not coding.</p>
+
+  <a class="btn" href="https://github.com/waleedxe/Satr/releases/latest">Download for Windows</a>
+  <a class="btn secondary" href="https://github.com/waleedxe/Satr">View source</a>
+  <p class="note">Windows 10/11 · x64 · the installer is currently <strong>unsigned</strong>, so SmartScreen
+     warns on first run — choose <em>More info → Run anyway</em>.</p>
+
+  <h2>Features</h2>
+  <div class="grid">
+    <ul>
+      <li>Visual (WYSIWYG) editing</li>
+      <li>Raw Markdown source mode (Ctrl+/)</li>
+      <li>Lossless saving — untouched blocks keep their exact bytes</li>
+      <li>Tables, task lists, blockquotes, code blocks</li>
+    </ul>
+    <ul>
+      <li>Syntax highlighting for 35+ languages</li>
+      <li>Math with KaTeX (inline and block)</li>
+      <li>Tabs, outline, find &amp; replace, focus mode</li>
+      <li>Full Arabic interface with right-to-left layout</li>
+    </ul>
+  </div>
+
+  <h2>Private by design</h2>
+  <p>Satr works completely offline. No account, no cloud sync, no telemetry. It only reads and
+     writes the files you open, and never sends your documents anywhere.</p>
+
+  <footer>
+    MIT licensed · <a href="https://github.com/waleedxe/Satr">github.com/waleedxe/Satr</a> ·
+    <a href="https://github.com/waleedxe/Satr/releases">all releases</a>
+  </footer>
+</div>
+</body>
+</html>
