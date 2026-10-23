@@ -52,6 +52,31 @@ describe("verbatim preservation when editing", () => {
     expect(out).toBe(source.slice(source.indexOf("* star list")));
   });
 
+  it("does not reuse a deleted sibling's source for an equal block", () => {
+    // Both blocks are `heading(level=1, text="Title")` and compare equal, but
+    // their source text differs. Deleting the setext block must not make the
+    // untouched ATX block adopt the setext source.
+    const loaded = load("Title\n=====\n\n# Title\n");
+    const first = loaded.doc.child(0);
+    const doc = loaded.doc.replace(0, first.nodeSize, Slice.empty);
+    const out = serializeMarkdown(doc, loaded.sourceMap, loaded.style).markdown;
+    expect(out).toBe("# Title\n");
+  });
+
+  it("keeps an untouched equal block byte-identical when a sibling is edited", () => {
+    const loaded = load("Title\n=====\n\n# Title\n");
+    const second = loaded.doc.child(1);
+    const start = loaded.doc.child(0).nodeSize;
+    const edited = schema.nodes.heading!.create({ level: 1 }, schema.text("Changed"));
+    const doc = loaded.doc.replace(
+      start,
+      start + second.nodeSize,
+      new Slice(schema.nodes.doc!.create(null, edited).content, 0, 0),
+    );
+    const out = serializeMarkdown(doc, loaded.sourceMap, loaded.style).markdown;
+    expect(out).toBe("Title\n=====\n\n# Changed\n");
+  });
+
   it("returns a source map that makes the next save verbatim", () => {
     const loaded = load(source);
     const first = serializeMarkdown(loaded.doc, loaded.sourceMap, loaded.style);

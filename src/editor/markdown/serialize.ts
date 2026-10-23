@@ -289,10 +289,14 @@ export function serializeMarkdown(
   let next = 0;
 
   doc.content.forEach((node) => {
+    // Reuse a block's source only when it is literally the same node: nodes are
+    // immutable and structurally shared, so an untouched block keeps its object
+    // reference across edits. Matching by `node.eq` instead would let a surviving
+    // block adopt the raw source of a deleted-but-semantically-equal sibling
+    // (e.g. `Title\n=====` standing in for an untouched `# Title`).
     let origin = -1;
     for (let k = next; k < Math.min(originals.length, next + LOOKAHEAD); k++) {
-      const candidate = originals[k]!.node;
-      if (candidate && (candidate === node || candidate.eq(node))) {
+      if (originals[k]!.node === node) {
         origin = k;
         break;
       }
